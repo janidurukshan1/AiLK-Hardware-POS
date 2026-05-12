@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AiLK Hardware Shop POS System</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- Setup Screen -->
+<div class="setup-screen" id="setupScreen">
+  <div class="setup-box">
+    <h1>AiLK Hardware Shop POS System</h1>
+
+    <input type="text" id="shopName" placeholder="Shop Name">
+    <input type="text" id="shopLocation" placeholder="Shop Location">
+    <input type="text" id="shopPhone" placeholder="Phone Number">
+    <input type="text" id="cashierName" placeholder="Cashier Name">
+
+    <button onclick="saveSetup()">Save & Continue</button>
+  </div>
+</div>
+
+<!-- Main POS -->
+<div class="container" id="mainSystem">
+
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <h2>AiLK POS</h2>
+
+    <ul>
+      <li>Dashboard</li>
+      <li>New Sale</li>
+      <li>Products</li>
+      <li>Reports</li>
+      <li>Settings</li>
+    </ul>
+  </div>
+
+  <!-- Main Content -->
+  <div class="main-content">
+
+    <!-- Top Bar -->
+    <div class="topbar">
+      <h1 id="shopTitle">Hardware Shop</h1>
+      <div class="cashier" id="cashierDisplay"></div>
+    </div>
+
+    <!-- Product Search -->
+    <div class="search-section">
+      <input type="text" id="searchInput" placeholder="Search Product..." onkeyup="searchProducts()">
+    </div>
+
+    <!-- Product List -->
+    <div class="products" id="productsContainer"></div>
+
+    <!-- Cart -->
+    <div class="cart-section">
+      <h2>Bill</h2>
+
+      <div id="cartItems"></div>
+
+      <h3>Total: Rs. <span id="total">0</span></h3>
+
+      <button onclick="printReceipt()">Print Receipt</button>
+    </div>
+
+  </div>
+</html>
