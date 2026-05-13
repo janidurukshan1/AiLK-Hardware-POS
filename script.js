@@ -1,30 +1,38 @@
-// ==========================
-// AiLK Hardware Shop POS
-// ==========================
+// ===============================
+// AiLK Hardware Shop POS System
+// ===============================
 
 // STORAGE
 let products = JSON.parse(localStorage.getItem("products")) || [];
-let bill = [];
+let bill = JSON.parse(localStorage.getItem("bill")) || [];
 let cashiers = JSON.parse(localStorage.getItem("cashiers")) || [];
+
 let totalBills = Number(localStorage.getItem("totalBills")) || 0;
 let todaySales = Number(localStorage.getItem("todaySales")) || 0;
 
-// ==========================
+// ===============================
 // LOGIN SYSTEM
-// ==========================
+// ===============================
 
 function loginSystem() {
 
-    const shopName = document.getElementById("shopName").value;
-    const shopLocation = document.getElementById("shopLocation").value;
-    const shopPhone = document.getElementById("shopPhone").value;
-    const cashierName = document.getElementById("cashierName").value;
+    const shopName =
+    document.getElementById("shopName").value.trim();
+
+    const shopLocation =
+    document.getElementById("shopLocation").value.trim();
+
+    const shopPhone =
+    document.getElementById("shopPhone").value.trim();
+
+    const cashierName =
+    document.getElementById("cashierName").value.trim();
 
     if(
-        shopName === "" ||
-        shopLocation === "" ||
-        shopPhone === "" ||
-        cashierName === ""
+        !shopName ||
+        !shopLocation ||
+        !shopPhone ||
+        !cashierName
     ){
         alert("Please Fill All Details");
         return;
@@ -37,43 +45,57 @@ function loginSystem() {
         cashierName
     };
 
-    localStorage.setItem("shopData", JSON.stringify(shopData));
+    localStorage.setItem(
+        "shopData",
+        JSON.stringify(shopData)
+    );
 
-    document.getElementById("loginScreen").style.display = "none";
+    if(!cashiers.includes(cashierName)){
+
+        cashiers.push(cashierName);
+
+        localStorage.setItem(
+            "cashiers",
+            JSON.stringify(cashiers)
+        );
+
+    }
 
     loadShopData();
 
 }
 
-// ==========================
+// ===============================
 // LOAD SHOP DATA
-// ==========================
+// ===============================
 
 function loadShopData(){
 
-    const shop = JSON.parse(localStorage.getItem("shopData"));
+    const shop =
+    JSON.parse(localStorage.getItem("shopData"));
 
     if(shop){
 
-        document.getElementById("loginScreen").style.display = "none";
+        document.getElementById("loginScreen")
+        .style.display = "none";
 
-        document.getElementById("shopTitle").innerText =
-        shop.shopName;
+        document.getElementById("shopTitle")
+        .innerText = shop.shopName;
 
-        document.getElementById("cashierDisplay").innerText =
-        shop.cashierName;
+        document.getElementById("cashierDisplay")
+        .innerText = shop.cashierName;
 
-        document.getElementById("accountShopName").innerText =
-        shop.shopName;
+        document.getElementById("accountShopName")
+        .innerText = shop.shopName;
 
-        document.getElementById("accountLocation").innerText =
-        shop.shopLocation;
+        document.getElementById("accountLocation")
+        .innerText = shop.shopLocation;
 
-        document.getElementById("accountPhone").innerText =
-        shop.shopPhone;
+        document.getElementById("accountPhone")
+        .innerText = shop.shopPhone;
 
-        document.getElementById("accountCashier").innerText =
-        shop.cashierName;
+        document.getElementById("accountCashier")
+        .innerText = shop.cashierName;
 
     }
 
@@ -81,31 +103,31 @@ function loadShopData(){
 
 loadShopData();
 
-// ==========================
+// ===============================
 // DATE & TIME
-// ==========================
+// ===============================
 
 function updateDate(){
 
     const now = new Date();
 
-    document.getElementById("dateBox").innerText =
-    now.toLocaleString();
+    document.getElementById("dateBox")
+    .innerText = now.toLocaleString();
 
 }
 
 setInterval(updateDate,1000);
 
-// ==========================
+// ===============================
 // PAGE SWITCHING
-// ==========================
+// ===============================
 
 function showPage(pageId){
 
     const pages =
     document.querySelectorAll(".page");
 
-    pages.forEach(page => {
+    pages.forEach(page=>{
         page.classList.remove("active-page");
     });
 
@@ -115,9 +137,9 @@ function showPage(pageId){
 
 }
 
-// ==========================
+// ===============================
 // PRODUCT POPUP
-// ==========================
+// ===============================
 
 function openProductPopup(){
 
@@ -133,27 +155,35 @@ function closePopup(){
 
 }
 
-// ==========================
+// ===============================
 // SAVE PRODUCT
-// ==========================
+// ===============================
 
 function saveProduct(){
 
     const name =
-    document.getElementById("productName").value;
+    document.getElementById("productName")
+    .value.trim();
 
     const price =
-    document.getElementById("productPrice").value;
+    document.getElementById("productPrice")
+    .value.trim();
 
-    if(name === "" || price === ""){
-        alert("Enter Product Details");
+    if(!name || !price){
+
+        alert("Please Enter Product Details");
         return;
+
     }
 
     const product = {
+
         id: Date.now(),
-        name,
-        price
+
+        name: name,
+
+        price: Number(price)
+
     };
 
     products.push(product);
@@ -166,33 +196,41 @@ function saveProduct(){
     displayProducts();
     displayManageProducts();
 
-    closePopup();
+    document.getElementById("productName")
+    .value = "";
 
-    document.getElementById("productName").value = "";
-    document.getElementById("productPrice").value = "";
+    document.getElementById("productPrice")
+    .value = "";
+
+    closePopup();
 
 }
 
-// ==========================
+// ===============================
 // DISPLAY PRODUCTS
-// ==========================
+// ===============================
 
 function displayProducts(filteredProducts = products){
 
     const productList =
     document.getElementById("productList");
 
+    if(!productList) return;
+
     productList.innerHTML = "";
 
-    filteredProducts.forEach(product => {
+    filteredProducts.forEach(product=>{
 
         productList.innerHTML += `
 
         <div class="product-item">
 
             <div>
+
                 <h3>${product.name}</h3>
+
                 <p>LKR ${product.price}</p>
+
             </div>
 
             <button onclick="addToBill(${product.id})">
@@ -212,9 +250,9 @@ function displayProducts(filteredProducts = products){
 
 displayProducts();
 
-// ==========================
+// ===============================
 // SEARCH PRODUCTS
-// ==========================
+// ===============================
 
 function searchProducts(){
 
@@ -222,40 +260,55 @@ function searchProducts(){
     document.getElementById("searchInput")
     .value.toLowerCase();
 
-    const filtered =
-    products.filter(product =>
+    const filteredProducts =
+    products.filter(product=>
+
         product.name
         .toLowerCase()
         .includes(search)
+
     );
 
-    displayProducts(filtered);
+    displayProducts(filteredProducts);
 
 }
 
-// ==========================
+// ===============================
 // ADD TO BILL
-// ==========================
+// ===============================
 
 function addToBill(id){
 
     const product =
-    products.find(p => p.id === id);
+    products.find(product=>
+        product.id === id
+    );
 
-    bill.push(product);
+    if(product){
 
-    updateBill();
+        bill.push(product);
+
+        localStorage.setItem(
+            "bill",
+            JSON.stringify(bill)
+        );
+
+        updateBill();
+
+    }
 
 }
 
-// ==========================
+// ===============================
 // UPDATE BILL
-// ==========================
+// ===============================
 
 function updateBill(){
 
     const billItems =
     document.getElementById("billItems");
+
+    if(!billItems) return;
 
     billItems.innerHTML = "";
 
@@ -270,8 +323,11 @@ function updateBill(){
         <div class="bill-item">
 
             <div>
+
                 <h4>${item.name}</h4>
+
                 <p>LKR ${item.price}</p>
+
             </div>
 
             <button onclick="removeBillItem(${index})">
@@ -289,81 +345,87 @@ function updateBill(){
 
 }
 
-// ==========================
+updateBill();
+
+// ===============================
 // REMOVE BILL ITEM
-// ==========================
+// ===============================
 
 function removeBillItem(index){
 
     bill.splice(index,1);
 
+    localStorage.setItem(
+        "bill",
+        JSON.stringify(bill)
+    );
+
     updateBill();
 
 }
 
-// ==========================
+// ===============================
 // CLEAR BILL
-// ==========================
+// ===============================
 
 function clearBill(){
 
     bill = [];
 
+    localStorage.removeItem("bill");
+
     updateBill();
 
 }
 
-// ==========================
-// CHECKOUT
-// ==========================
+// ===============================
+// CHECKOUT BILL
+// ===============================
 
 function checkoutBill(){
 
+    if(bill.length === 0){
+
+        alert("Bill Empty");
+        return;
+
+    }
+
     let total = 0;
 
-    bill.forEach(item => {
+    bill.forEach(item=>{
+
         total += Number(item.price);
+
     });
 
-    totalBills++;
     todaySales += total;
 
-    localStorage.setItem(
-        "totalBills",
-        totalBills
-    );
+    totalBills++;
 
     localStorage.setItem(
         "todaySales",
         todaySales
     );
 
-    document.getElementById("todaySales")
-    .innerText = "LKR " + todaySales;
+    localStorage.setItem(
+        "totalBills",
+        totalBills
+    );
 
-    document.getElementById("totalBills")
-    .innerText = totalBills;
-
-    document.getElementById("dailyIncome")
-    .innerText = "LKR " + todaySales;
-
-    document.getElementById("weeklyIncome")
-    .innerText = "LKR " + (todaySales * 7);
-
-    document.getElementById("yearIncome")
-    .innerText = "LKR " + (todaySales * 365);
-
-    alert("Bill Checkout Success");
+    loadSummary();
 
     printReceipt();
 
     clearBill();
 
+    alert("Checkout Success");
+
 }
 
-// ==========================
+// ===============================
 // PRINT RECEIPT
-// ==========================
+// ===============================
 
 function printReceipt(){
 
@@ -395,8 +457,8 @@ function printReceipt(){
         receipt += `
 
         <p>
-        ${item.name}
-        - LKR ${item.price}
+            ${item.name}
+            - LKR ${item.price}
         </p>
 
         `;
@@ -430,14 +492,16 @@ function printReceipt(){
 
 }
 
-// ==========================
+// ===============================
 // MANAGE PRODUCTS
-// ==========================
+// ===============================
 
 function displayManageProducts(){
 
     const manageProducts =
     document.getElementById("manageProducts");
+
+    if(!manageProducts) return;
 
     manageProducts.innerHTML = "";
 
@@ -448,8 +512,11 @@ function displayManageProducts(){
         <div class="manage-product-item">
 
             <div>
+
                 <h3>${product.name}</h3>
+
                 <p>LKR ${product.price}</p>
+
             </div>
 
             <div>
@@ -474,14 +541,14 @@ function displayManageProducts(){
 
 displayManageProducts();
 
-// ==========================
+// ===============================
 // DELETE PRODUCT
-// ==========================
+// ===============================
 
 function deleteProduct(id){
 
     products =
-    products.filter(product =>
+    products.filter(product=>
         product.id !== id
     );
 
@@ -495,14 +562,16 @@ function deleteProduct(id){
 
 }
 
-// ==========================
+// ===============================
 // EDIT PRODUCT
-// ==========================
+// ===============================
 
 function editProduct(id){
 
     const product =
-    products.find(p => p.id === id);
+    products.find(product=>
+        product.id === id
+    );
 
     const newName =
     prompt("Edit Product Name",product.name);
@@ -513,7 +582,7 @@ function editProduct(id){
     if(newName && newPrice){
 
         product.name = newName;
-        product.price = newPrice;
+        product.price = Number(newPrice);
 
         localStorage.setItem(
             "products",
@@ -527,18 +596,20 @@ function editProduct(id){
 
 }
 
-// ==========================
+// ===============================
 // CASHIERS
-// ==========================
+// ===============================
 
 function addCashier(){
 
     const cashier =
     document.getElementById("newCashier")
-    .value;
+    .value.trim();
 
-    if(cashier === ""){
+    if(!cashier){
+
         return;
+
     }
 
     cashiers.push(cashier);
@@ -548,10 +619,10 @@ function addCashier(){
         JSON.stringify(cashiers)
     );
 
-    displayCashiers();
-
     document.getElementById("newCashier")
     .value = "";
+
+    displayCashiers();
 
 }
 
@@ -559,6 +630,8 @@ function displayCashiers(){
 
     const cashierList =
     document.getElementById("cashierList");
+
+    if(!cashierList) return;
 
     cashierList.innerHTML = "";
 
@@ -570,9 +643,17 @@ function displayCashiers(){
 
             <h3>${cashier}</h3>
 
-            <button onclick="deleteCashier(${index})">
-                Delete
-            </button>
+            <div>
+
+                <button onclick="changeCashier('${cashier}')">
+                    Use
+                </button>
+
+                <button onclick="deleteCashier(${index})">
+                    Delete
+                </button>
+
+            </div>
 
         </div>
 
@@ -584,9 +665,31 @@ function displayCashiers(){
 
 displayCashiers();
 
-// ==========================
+// ===============================
+// CHANGE CASHIER
+// ===============================
+
+function changeCashier(name){
+
+    const shop =
+    JSON.parse(localStorage.getItem("shopData"));
+
+    shop.cashierName = name;
+
+    localStorage.setItem(
+        "shopData",
+        JSON.stringify(shop)
+    );
+
+    loadShopData();
+
+    alert("Cashier Changed");
+
+}
+
+// ===============================
 // DELETE CASHIER
-// ==========================
+// ===============================
 
 function deleteCashier(index){
 
@@ -601,14 +704,14 @@ function deleteCashier(index){
 
 }
 
-// ==========================
+// ===============================
 // ACCOUNT SETTINGS
-// ==========================
+// ===============================
 
 function resetAccount(){
 
     const confirmDelete =
-    confirm("Delete Login Details?");
+    confirm("Delete All Account Data?");
 
     if(confirmDelete){
 
@@ -622,25 +725,34 @@ function resetAccount(){
 
 function addAnotherAccount(){
 
-    location.reload();
+    document.getElementById("loginScreen")
+    .style.display = "flex";
 
 }
 
-// ==========================
-// LOAD SUMMARY
-// ==========================
+// ===============================
+// SUMMARY
+// ===============================
 
-document.getElementById("todaySales")
-.innerText = "LKR " + todaySales;
+function loadSummary(){
 
-document.getElementById("totalBills")
-.innerText = totalBills;
+    document.getElementById("todaySales")
+    .innerText = "LKR " + todaySales;
 
-document.getElementById("dailyIncome")
-.innerText = "LKR " + todaySales;
+    document.getElementById("totalBills")
+    .innerText = totalBills;
 
-document.getElementById("weeklyIncome")
-.innerText = "LKR " + (todaySales * 7);
+    document.getElementById("dailyIncome")
+    .innerText = "LKR " + todaySales;
 
-document.getElementById("yearIncome")
-.innerText = "LKR " + (todaySales * 365);
+    document.getElementById("weeklyIncome")
+    .innerText =
+    "LKR " + (todaySales * 7);
+
+    document.getElementById("yearIncome")
+    .innerText =
+    "LKR " + (todaySales * 365);
+
+}
+
+loadSummary();
