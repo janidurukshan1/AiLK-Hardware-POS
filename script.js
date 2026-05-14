@@ -1,20 +1,30 @@
-// ===============================
+```javascript id="r3k9d1"
+// =====================================
 // AiLK Hardware Shop POS System
-// ===============================
+// FULL UPDATED WORKING VERSION
+// =====================================
 
 // STORAGE
-let products = JSON.parse(localStorage.getItem("products")) || [];
-let bill = JSON.parse(localStorage.getItem("bill")) || [];
-let cashiers = JSON.parse(localStorage.getItem("cashiers")) || [];
+let products =
+JSON.parse(localStorage.getItem("products")) || [];
 
-let totalBills = Number(localStorage.getItem("totalBills")) || 0;
-let todaySales = Number(localStorage.getItem("todaySales")) || 0;
+let bill =
+JSON.parse(localStorage.getItem("bill")) || [];
 
-// ===============================
+let cashiers =
+JSON.parse(localStorage.getItem("cashiers")) || [];
+
+let totalBills =
+Number(localStorage.getItem("totalBills")) || 0;
+
+let todaySales =
+Number(localStorage.getItem("todaySales")) || 0;
+
+// =====================================
 // LOGIN SYSTEM
-// ===============================
+// =====================================
 
-function loginSystem() {
+function loginSystem(){
 
     const shopName =
     document.getElementById("shopName").value.trim();
@@ -34,15 +44,19 @@ function loginSystem() {
         !shopPhone ||
         !cashierName
     ){
+
         alert("Please Fill All Details");
         return;
+
     }
 
     const shopData = {
+
         shopName,
         shopLocation,
         shopPhone,
         cashierName
+
     };
 
     localStorage.setItem(
@@ -65,9 +79,9 @@ function loginSystem() {
 
 }
 
-// ===============================
+// =====================================
 // LOAD SHOP DATA
-// ===============================
+// =====================================
 
 function loadShopData(){
 
@@ -103,9 +117,9 @@ function loadShopData(){
 
 loadShopData();
 
-// ===============================
+// =====================================
 // DATE & TIME
-// ===============================
+// =====================================
 
 function updateDate(){
 
@@ -118,9 +132,9 @@ function updateDate(){
 
 setInterval(updateDate,1000);
 
-// ===============================
+// =====================================
 // PAGE SWITCHING
-// ===============================
+// =====================================
 
 function showPage(pageId){
 
@@ -128,7 +142,9 @@ function showPage(pageId){
     document.querySelectorAll(".page");
 
     pages.forEach(page=>{
+
         page.classList.remove("active-page");
+
     });
 
     document
@@ -137,9 +153,9 @@ function showPage(pageId){
 
 }
 
-// ===============================
-// PRODUCT POPUP
-// ===============================
+// =====================================
+// POPUP
+// =====================================
 
 function openProductPopup(){
 
@@ -155,9 +171,9 @@ function closePopup(){
 
 }
 
-// ===============================
+// =====================================
 // SAVE PRODUCT
-// ===============================
+// =====================================
 
 function saveProduct(){
 
@@ -165,13 +181,26 @@ function saveProduct(){
     document.getElementById("productName")
     .value.trim();
 
+    const barcode =
+    document.getElementById("productBarcode")
+    .value.trim();
+
     const price =
     document.getElementById("productPrice")
     .value.trim();
 
-    if(!name || !price){
+    const qty =
+    document.getElementById("productQty")
+    .value.trim();
 
-        alert("Please Enter Product Details");
+    if(
+        !name ||
+        !barcode ||
+        !price ||
+        !qty
+    ){
+
+        alert("Please Fill Product Details");
         return;
 
     }
@@ -182,7 +211,11 @@ function saveProduct(){
 
         name: name,
 
-        price: Number(price)
+        barcode: barcode,
+
+        price: Number(price),
+
+        qty: Number(qty)
 
     };
 
@@ -194,21 +227,26 @@ function saveProduct(){
     );
 
     displayProducts();
+
     displayManageProducts();
 
-    document.getElementById("productName")
-    .value = "";
+    document.getElementById("productName").value = "";
 
-    document.getElementById("productPrice")
-    .value = "";
+    document.getElementById("productBarcode").value = "";
+
+    document.getElementById("productPrice").value = "";
+
+    document.getElementById("productQty").value = "";
 
     closePopup();
 
+    alert("Product Added Successfully");
+
 }
 
-// ===============================
+// =====================================
 // DISPLAY PRODUCTS
-// ===============================
+// =====================================
 
 function displayProducts(filteredProducts = products){
 
@@ -229,7 +267,11 @@ function displayProducts(filteredProducts = products){
 
                 <h3>${product.name}</h3>
 
+                <p>Barcode : ${product.barcode}</p>
+
                 <p>LKR ${product.price}</p>
+
+                <p>Stock : ${product.qty}</p>
 
             </div>
 
@@ -250,9 +292,9 @@ function displayProducts(filteredProducts = products){
 
 displayProducts();
 
-// ===============================
+// =====================================
 // SEARCH PRODUCTS
-// ===============================
+// =====================================
 
 function searchProducts(){
 
@@ -261,9 +303,15 @@ function searchProducts(){
     .value.toLowerCase();
 
     const filteredProducts =
-    products.filter(product=>
+    products.filter(product =>
 
         product.name
+        .toLowerCase()
+        .includes(search)
+
+        ||
+
+        product.barcode
         .toLowerCase()
         .includes(search)
 
@@ -273,35 +321,63 @@ function searchProducts(){
 
 }
 
-// ===============================
+// =====================================
 // ADD TO BILL
-// ===============================
+// =====================================
 
 function addToBill(id){
 
     const product =
-    products.find(product=>
+    products.find(product =>
         product.id === id
     );
 
-    if(product){
+    if(!product){
 
-        bill.push(product);
-
-        localStorage.setItem(
-            "bill",
-            JSON.stringify(bill)
-        );
-
-        updateBill();
+        return;
 
     }
 
+    if(product.qty <= 0){
+
+        alert("Out Of Stock");
+        return;
+
+    }
+
+    product.qty--;
+
+    bill.push({
+
+        id: product.id,
+
+        name: product.name,
+
+        price: product.price
+
+    });
+
+    localStorage.setItem(
+        "products",
+        JSON.stringify(products)
+    );
+
+    localStorage.setItem(
+        "bill",
+        JSON.stringify(bill)
+    );
+
+    displayProducts();
+
+    displayManageProducts();
+
+    updateBill();
+
 }
 
-// ===============================
+// =====================================
 // UPDATE BILL
-// ===============================
+// =====================================
 
 function updateBill(){
 
@@ -347,9 +423,9 @@ function updateBill(){
 
 updateBill();
 
-// ===============================
+// =====================================
 // REMOVE BILL ITEM
-// ===============================
+// =====================================
 
 function removeBillItem(index){
 
@@ -364,9 +440,9 @@ function removeBillItem(index){
 
 }
 
-// ===============================
+// =====================================
 // CLEAR BILL
-// ===============================
+// =====================================
 
 function clearBill(){
 
@@ -378,9 +454,9 @@ function clearBill(){
 
 }
 
-// ===============================
-// CHECKOUT BILL
-// ===============================
+// =====================================
+// CHECKOUT
+// =====================================
 
 function checkoutBill(){
 
@@ -423,9 +499,9 @@ function checkoutBill(){
 
 }
 
-// ===============================
+// =====================================
 // PRINT RECEIPT
-// ===============================
+// =====================================
 
 function printReceipt(){
 
@@ -492,9 +568,9 @@ function printReceipt(){
 
 }
 
-// ===============================
+// =====================================
 // MANAGE PRODUCTS
-// ===============================
+// =====================================
 
 function displayManageProducts(){
 
@@ -515,7 +591,11 @@ function displayManageProducts(){
 
                 <h3>${product.name}</h3>
 
+                <p>Barcode : ${product.barcode}</p>
+
                 <p>LKR ${product.price}</p>
+
+                <p>Stock : ${product.qty}</p>
 
             </div>
 
@@ -541,9 +621,9 @@ function displayManageProducts(){
 
 displayManageProducts();
 
-// ===============================
+// =====================================
 // DELETE PRODUCT
-// ===============================
+// =====================================
 
 function deleteProduct(id){
 
@@ -558,13 +638,14 @@ function deleteProduct(id){
     );
 
     displayProducts();
+
     displayManageProducts();
 
 }
 
-// ===============================
+// =====================================
 // EDIT PRODUCT
-// ===============================
+// =====================================
 
 function editProduct(id){
 
@@ -574,15 +655,36 @@ function editProduct(id){
     );
 
     const newName =
-    prompt("Edit Product Name",product.name);
+    prompt(
+        "Edit Product Name",
+        product.name
+    );
 
     const newPrice =
-    prompt("Edit Product Price",product.price);
+    prompt(
+        "Edit Product Price",
+        product.price
+    );
 
-    if(newName && newPrice){
+    const newQty =
+    prompt(
+        "Edit Product Qty",
+        product.qty
+    );
+
+    if(
+        newName &&
+        newPrice &&
+        newQty
+    ){
 
         product.name = newName;
-        product.price = Number(newPrice);
+
+        product.price =
+        Number(newPrice);
+
+        product.qty =
+        Number(newQty);
 
         localStorage.setItem(
             "products",
@@ -590,15 +692,16 @@ function editProduct(id){
         );
 
         displayProducts();
+
         displayManageProducts();
 
     }
 
 }
 
-// ===============================
+// =====================================
 // CASHIERS
-// ===============================
+// =====================================
 
 function addCashier(){
 
@@ -665,9 +768,9 @@ function displayCashiers(){
 
 displayCashiers();
 
-// ===============================
+// =====================================
 // CHANGE CASHIER
-// ===============================
+// =====================================
 
 function changeCashier(name){
 
@@ -687,9 +790,9 @@ function changeCashier(name){
 
 }
 
-// ===============================
+// =====================================
 // DELETE CASHIER
-// ===============================
+// =====================================
 
 function deleteCashier(index){
 
@@ -704,9 +807,9 @@ function deleteCashier(index){
 
 }
 
-// ===============================
-// ACCOUNT SETTINGS
-// ===============================
+// =====================================
+// ACCOUNT
+// =====================================
 
 function resetAccount(){
 
@@ -730,9 +833,9 @@ function addAnotherAccount(){
 
 }
 
-// ===============================
+// =====================================
 // SUMMARY
-// ===============================
+// =====================================
 
 function loadSummary(){
 
@@ -756,3 +859,4 @@ function loadSummary(){
 }
 
 loadSummary();
+```
