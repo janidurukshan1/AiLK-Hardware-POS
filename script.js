@@ -1,23 +1,28 @@
+```javascript
 // =====================================
-// AiLK Hardware POS
-// FULLY FIXED LOGIN VERSION
+// AiLK POS SYSTEM
+// FULL UPDATED SCRIPT
 // =====================================
 
-// STORAGE
 let products =
 JSON.parse(localStorage.getItem("products")) || [];
 
-let bill =
-JSON.parse(localStorage.getItem("bill")) || [];
+let bill = [];
 
 let cashiers =
 JSON.parse(localStorage.getItem("cashiers")) || [];
+
+let todaySales =
+Number(localStorage.getItem("todaySales")) || 0;
+
+let totalBills =
+Number(localStorage.getItem("totalBills")) || 0;
 
 // =====================================
 // PAGE LOAD
 // =====================================
 
-window.onload = function(){
+window.onload = () => {
 
     // LOGIN BUTTON
     const loginBtn =
@@ -32,33 +37,19 @@ window.onload = function(){
 
     }
 
-    // CHECK LOGIN
-    checkLogin();
+    loadShop();
+
+    displayProducts();
+
+    displayManageProducts();
+
+    displayCashiers();
+
+    updateSummary();
+
+    updateDate();
 
 };
-
-// =====================================
-// CHECK LOGIN
-// =====================================
-
-function checkLogin(){
-
-    const shopData =
-    localStorage.getItem("shopData");
-
-    if(shopData){
-
-        document.getElementById("loginScreen")
-        .style.display = "none";
-
-    }else{
-
-        document.getElementById("loginScreen")
-        .style.display = "flex";
-
-    }
-
-}
 
 // =====================================
 // LOGIN SYSTEM
@@ -78,12 +69,11 @@ function loginSystem(){
     const cashierName =
     document.getElementById("cashierName").value.trim();
 
-    // VALIDATION
     if(
-        shopName === "" ||
-        shopLocation === "" ||
-        shopPhone === "" ||
-        cashierName === ""
+        !shopName ||
+        !shopLocation ||
+        !shopPhone ||
+        !cashierName
     ){
 
         alert("Please Fill All Details");
@@ -92,95 +82,175 @@ function loginSystem(){
 
     }
 
-    // SAVE DATA
-    const shopData = {
+    const shop = {
 
-        shopName: shopName,
-
-        shopLocation: shopLocation,
-
-        shopPhone: shopPhone,
-
-        cashierName: cashierName
+        shopName,
+        shopLocation,
+        shopPhone,
+        cashierName
 
     };
 
     localStorage.setItem(
-        "shopData",
-        JSON.stringify(shopData)
+        "shop",
+        JSON.stringify(shop)
     );
 
-    // HIDE LOGIN
-    document.getElementById("loginScreen")
-    .style.display = "none";
+    // ADD CASHIER
+    if(!cashiers.includes(cashierName)){
 
-    // UPDATE TITLE
-    const title =
-    document.getElementById("shopTitle");
+        cashiers.push(cashierName);
 
-    if(title){
-
-        title.innerText = shopName;
+        localStorage.setItem(
+            "cashiers",
+            JSON.stringify(cashiers)
+        );
 
     }
 
-    alert("Login Success");
+    loadShop();
 
 }
 
 // =====================================
-// PAGE SWITCHING
+// LOAD SHOP
+// =====================================
+
+function loadShop(){
+
+    const shop =
+    JSON.parse(localStorage.getItem("shop"));
+
+    if(shop){
+
+        // HIDE LOGIN
+        document.getElementById("loginScreen")
+        .style.display = "none";
+
+        // SHOP TITLE
+        document.getElementById("shopTitle")
+        .innerText = shop.shopName;
+
+        // ACCOUNT
+        document.getElementById("accountShop")
+        .innerText = shop.shopName;
+
+        document.getElementById("accountLocation")
+        .innerText = shop.shopLocation;
+
+        document.getElementById("accountPhone")
+        .innerText = shop.shopPhone;
+
+        // CASHIER
+        loadCashierDropdown(
+            shop.cashierName
+        );
+
+    }
+
+}
+
+// =====================================
+// CASHIER DROPDOWN
+// =====================================
+
+function loadCashierDropdown(currentCashier){
+
+    const dropdown =
+    document.getElementById("cashierDropdown");
+
+    if(!dropdown) return;
+
+    dropdown.innerHTML = "";
+
+    cashiers.forEach(cashier => {
+
+        dropdown.innerHTML += `
+
+        <option value="${cashier}">
+            ${cashier}
+        </option>
+
+        `;
+
+    });
+
+    dropdown.value = currentCashier;
+
+}
+
+function changeCashierByDropdown(){
+
+    const shop =
+    JSON.parse(localStorage.getItem("shop"));
+
+    shop.cashierName =
+    document.getElementById("cashierDropdown").value;
+
+    localStorage.setItem(
+        "shop",
+        JSON.stringify(shop)
+    );
+
+}
+
+// =====================================
+// DATE
+// =====================================
+
+function updateDate(){
+
+    setInterval(() => {
+
+        const dateBox =
+        document.getElementById("dateBox");
+
+        if(dateBox){
+
+            dateBox.innerText =
+            new Date().toLocaleString();
+
+        }
+
+    },1000);
+
+}
+
+// =====================================
+// PAGE SWITCH
 // =====================================
 
 function showPage(pageId){
 
-    const pages =
-    document.querySelectorAll(".page");
+    document.querySelectorAll(".page")
+    .forEach(page => {
 
-    pages.forEach(page => {
-
-        page.classList.remove("active-page");
+        page.classList.remove(
+            "active-page"
+        );
 
     });
 
-    const selectedPage =
-    document.getElementById(pageId);
-
-    if(selectedPage){
-
-        selectedPage.classList.add("active-page");
-
-    }
+    document.getElementById(pageId)
+    .classList.add("active-page");
 
 }
 
 // =====================================
-// PRODUCT POPUP
+// POPUP
 // =====================================
 
-function openProductPopup(){
+function openPopup(){
 
-    const popup =
-    document.getElementById("productPopup");
-
-    if(popup){
-
-        popup.style.display = "flex";
-
-    }
+    document.getElementById("popup")
+    .style.display = "flex";
 
 }
 
 function closePopup(){
 
-    const popup =
-    document.getElementById("productPopup");
-
-    if(popup){
-
-        popup.style.display = "none";
-
-    }
+    document.getElementById("popup")
+    .style.display = "none";
 
 }
 
@@ -207,10 +277,10 @@ function saveProduct(){
     .value.trim();
 
     if(
-        name === "" ||
-        barcode === "" ||
-        price === "" ||
-        qty === ""
+        !name ||
+        !barcode ||
+        !price ||
+        !qty
     ){
 
         alert("Fill Product Details");
@@ -223,9 +293,9 @@ function saveProduct(){
 
         id: Date.now(),
 
-        name: name,
+        name,
 
-        barcode: barcode,
+        barcode,
 
         price: Number(price),
 
@@ -240,11 +310,17 @@ function saveProduct(){
         JSON.stringify(products)
     );
 
-    alert("Product Added");
+    displayProducts();
+
+    displayManageProducts();
 
     closePopup();
 
-    displayProducts();
+    // CLEAR INPUTS
+    document.getElementById("productName").value = "";
+    document.getElementById("productBarcode").value = "";
+    document.getElementById("productPrice").value = "";
+    document.getElementById("productQty").value = "";
 
 }
 
@@ -252,20 +328,16 @@ function saveProduct(){
 // DISPLAY PRODUCTS
 // =====================================
 
-function displayProducts(){
+function displayProducts(filtered = products){
 
     const productList =
     document.getElementById("productList");
 
-    if(!productList){
-
-        return;
-
-    }
+    if(!productList) return;
 
     productList.innerHTML = "";
 
-    products.forEach(product => {
+    filtered.forEach(product => {
 
         productList.innerHTML += `
 
@@ -296,6 +368,35 @@ function displayProducts(){
 }
 
 // =====================================
+// SEARCH PRODUCTS
+// =====================================
+
+function searchProducts(){
+
+    const search =
+    document.getElementById("searchInput")
+    .value.toLowerCase();
+
+    const filtered =
+    products.filter(product =>
+
+        product.name
+        .toLowerCase()
+        .includes(search)
+
+        ||
+
+        product.barcode
+        .toLowerCase()
+        .includes(search)
+
+    );
+
+    displayProducts(filtered);
+
+}
+
+// =====================================
 // ADD TO BILL
 // =====================================
 
@@ -304,11 +405,7 @@ function addToBill(id){
     const product =
     products.find(p => p.id === id);
 
-    if(!product){
-
-        return;
-
-    }
+    if(!product) return;
 
     if(product.qty <= 0){
 
@@ -327,9 +424,11 @@ function addToBill(id){
         JSON.stringify(products)
     );
 
-    updateBill();
-
     displayProducts();
+
+    displayManageProducts();
+
+    updateBill();
 
 }
 
@@ -342,11 +441,7 @@ function updateBill(){
     const billItems =
     document.getElementById("billItems");
 
-    if(!billItems){
-
-        return;
-
-    }
+    if(!billItems) return;
 
     billItems.innerHTML = "";
 
@@ -354,7 +449,7 @@ function updateBill(){
 
     bill.forEach((item,index) => {
 
-        total += Number(item.price);
+        total += item.price;
 
         billItems.innerHTML += `
 
@@ -362,14 +457,14 @@ function updateBill(){
 
             <div>
 
-                <h4>${item.name}</h4>
+                <h3>${item.name}</h3>
 
                 <p>LKR ${item.price}</p>
 
             </div>
 
             <button onclick="removeBillItem(${index})">
-                ❌
+                X
             </button>
 
         </div>
@@ -378,15 +473,8 @@ function updateBill(){
 
     });
 
-    const totalBox =
-    document.getElementById("billTotal");
-
-    if(totalBox){
-
-        totalBox.innerText =
-        "LKR " + total;
-
-    }
+    document.getElementById("billTotal")
+    .innerText = "LKR " + total;
 
 }
 
@@ -420,13 +508,29 @@ function clearBill(){
 
 function checkoutBill(){
 
-    if(bill.length === 0){
+    let total = 0;
 
-        alert("Bill Empty");
+    bill.forEach(item => {
 
-        return;
+        total += item.price;
 
-    }
+    });
+
+    todaySales += total;
+
+    totalBills++;
+
+    localStorage.setItem(
+        "todaySales",
+        todaySales
+    );
+
+    localStorage.setItem(
+        "totalBills",
+        totalBills
+    );
+
+    updateSummary();
 
     alert("Checkout Success");
 
@@ -440,6 +544,280 @@ function checkoutBill(){
 
 function printReceipt(){
 
-    window.print();
+    const shop =
+    JSON.parse(localStorage.getItem("shop"));
+
+    let total = 0;
+
+    let receipt = `
+
+    <center>
+
+    <h2>${shop.shopName}</h2>
+
+    <p>${shop.shopLocation}</p>
+
+    <p>${shop.shopPhone}</p>
+
+    <hr>
+
+    <h3>Cashier :
+    ${shop.cashierName}</h3>
+
+    `;
+
+    bill.forEach(item => {
+
+        total += item.price;
+
+        receipt += `
+
+        <p>
+            ${item.name}
+            -
+            LKR ${item.price}
+        </p>
+
+        `;
+
+    });
+
+    receipt += `
+
+    <hr>
+
+    <h2>Total : LKR ${total}</h2>
+
+    <p>Thank You Come Again</p>
+
+    </center>
+
+    `;
+
+    const printWindow =
+    window.open(
+        "",
+        "",
+        "width=350,height=600"
+    );
+
+    printWindow.document.write(receipt);
+
+    printWindow.print();
 
 }
+
+// =====================================
+// MANAGE PRODUCTS
+// =====================================
+
+function displayManageProducts(){
+
+    const manage =
+    document.getElementById("manageProducts");
+
+    if(!manage) return;
+
+    manage.innerHTML = "";
+
+    products.forEach(product => {
+
+        manage.innerHTML += `
+
+        <div class="manage-product-item">
+
+            <div>
+
+                <h3>${product.name}</h3>
+
+                <p>${product.barcode}</p>
+
+                <p>LKR ${product.price}</p>
+
+            </div>
+
+            <div>
+
+                <button onclick="editProduct(${product.id})">
+                    Edit
+                </button>
+
+                <button onclick="deleteProduct(${product.id})">
+                    Delete
+                </button>
+
+            </div>
+
+        </div>
+
+        `;
+
+    });
+
+}
+
+// =====================================
+// EDIT PRODUCT
+// =====================================
+
+function editProduct(id){
+
+    const product =
+    products.find(p => p.id === id);
+
+    if(!product) return;
+
+    const newName =
+    prompt(
+        "Edit Product Name",
+        product.name
+    );
+
+    const newPrice =
+    prompt(
+        "Edit Product Price",
+        product.price
+    );
+
+    if(newName && newPrice){
+
+        product.name = newName;
+
+        product.price = Number(newPrice);
+
+        localStorage.setItem(
+            "products",
+            JSON.stringify(products)
+        );
+
+        displayProducts();
+
+        displayManageProducts();
+
+    }
+
+}
+
+// =====================================
+// DELETE PRODUCT
+// =====================================
+
+function deleteProduct(id){
+
+    products =
+    products.filter(p => p.id !== id);
+
+    localStorage.setItem(
+        "products",
+        JSON.stringify(products)
+    );
+
+    displayProducts();
+
+    displayManageProducts();
+
+}
+
+// =====================================
+// CASHIERS
+// =====================================
+
+function addCashier(){
+
+    const cashier =
+    document.getElementById("newCashier")
+    .value.trim();
+
+    if(!cashier) return;
+
+    cashiers.push(cashier);
+
+    localStorage.setItem(
+        "cashiers",
+        JSON.stringify(cashiers)
+    );
+
+    displayCashiers();
+
+    loadCashierDropdown(cashier);
+
+    document.getElementById("newCashier")
+    .value = "";
+
+}
+
+function displayCashiers(){
+
+    const list =
+    document.getElementById("cashierList");
+
+    if(!list) return;
+
+    list.innerHTML = "";
+
+    cashiers.forEach((cashier,index) => {
+
+        list.innerHTML += `
+
+        <div class="manage-product-item">
+
+            <h3>${cashier}</h3>
+
+            <button onclick="deleteCashier(${index})">
+                Delete
+            </button>
+
+        </div>
+
+        `;
+
+    });
+
+}
+
+function deleteCashier(index){
+
+    cashiers.splice(index,1);
+
+    localStorage.setItem(
+        "cashiers",
+        JSON.stringify(cashiers)
+    );
+
+    displayCashiers();
+
+}
+
+// =====================================
+// SUMMARY
+// =====================================
+
+function updateSummary(){
+
+    document.getElementById("todaySales")
+    .innerText = "LKR " + todaySales;
+
+    document.getElementById("totalBills")
+    .innerText = totalBills;
+
+}
+
+// =====================================
+// DELETE ACCOUNT
+// =====================================
+
+function deleteAccount(){
+
+    const confirmDelete =
+    confirm("Delete Account?");
+
+    if(confirmDelete){
+
+        localStorage.clear();
+
+        location.reload();
+
+    }
+
+}
+```
