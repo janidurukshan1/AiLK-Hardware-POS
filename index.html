@@ -24,7 +24,7 @@
     <h1>AiLK POS System</h1>
 
     <p class="sub-title">
-      Shop Billing & Management
+      Hardware Shop Billing & Management
     </p>
 
     <input type="text" id="shopName" placeholder="Shop Name" />
@@ -54,4 +54,235 @@
   <div class="sidebar">
 
     <div class="logo-box">
+      <h2>AiLK POS</h2>
+    </div>
+
+    <button onclick="showPage('homePage')">
+      <i class="fa-solid fa-house"></i>
+      Home
+    </button>
+
+    <button onclick="showPage('billingPage')">
+      <i class="fa-solid fa-cash-register"></i>
+      Billing
+    </button>
+
+    <button onclick="showPage('productsPage')">
+      <i class="fa-solid fa-box"></i>
+      Products
+    </button>
+
+    <button onclick="showPage('cashierPage')">
+      <i class="fa-solid fa-users"></i>
+      Cashiers
+    </button>
+
+    <button onclick="showPage('summaryPage')">
+      <i class="fa-solid fa-chart-line"></i>
+      Summary
+    </button>
+
+    <button onclick="showPage('accountPage')">
+      <i class="fa-solid fa-user"></i>
+      My Account
+    </button>
+
+  </div>
+
+  <!-- CONTENT -->
+  <div class="main-content">
+
+    <!-- TOP BAR -->
+    <div class="top-bar">
+
+      <h2 id="shopTitle">
+        AiLK POS System
+      </h2>
+
+      <div class="top-right">
+
+        <select id="cashierDropdown" onchange="changeCashierByDropdown()">
+        </select>
+
+        <div id="dateBox"></div>
+
+      </div>
+
+    </div>
+
+    <!-- HOME -->
+    <div class="page active-page" id="homePage">
+
+  
+
+<!-- BILLING -->
+    <div class="page" id="billingPage">
+
+      <div class="billing-layout">
+
+        <!-- LEFT -->
+        <div class="products-section">
+
+          <div class="products-top">
+
+            <input
+              type="text"
+              id="searchInput"
+              placeholder="Search Product Or Scan Barcode"
+              onkeyup="searchProducts()"
+            />
+
+            <button onclick="openPopup()">
+              +
+            </button>
+
+          </div>
+
+          <div id="productList"></div>
+
+        </div>
+
+        <!-- RIGHT -->
+        <div class="bill-section">
+
+          <div class="bill-header">
+            <h2>Current Bill</h2>
+          </div>
+
+          <div id="billItems"></div>
+
+          <div class="bill-total-box">
+
+            <h1 id="billTotal">
+              LKR 0
+            </h1>
+
+          </div>
+
+          <div class="bill-buttons">
+
+            <button onclick="checkoutBill()">
+              Checkout
+            </button>
+
+            <button onclick="clearBill()">
+              Clear Bill
+            </button>
+
+            <button onclick="printReceipt()">
+              Print Bill
+            </button>
+    
+
+<!-- CASHIERS -->
+    <div class="page" id="cashierPage">
+
+      <div class="cashier-box-page">
+
+        <h1>Cashier Management</h1>
+
+        <div class="cashier-add">
+
+          <input
+            type="text"
+            id="newCashier"
+            placeholder="Cashier Name"
+          />
+
+          <button onclick="addCashier()">
+            Add Cashier
+          </button>
+
+        </div>
+
+        <div id="cashierList"></div>
+
+      </div>
+
+    </div>
+
+    <!-- SUMMARY -->
+    <div class="page" id="summaryPage">
+
+      <div class="summary-grid">
+
+        <div class="summary-card">
+          <h2>Today's Sales</h2>
+          <p id="todaySales">LKR 0</p>
+        </div>
+
+        <div class="summary-card">
+          <h2>Total Bills</h2>
+          <p id="totalBills">0</p>
+        </div>
+
+      </div>
+
+    </div>
+
+
+<!-- ACCOUNT -->
+    <div class="page" id="accountPage">
+
+      <div class="account-card">
+
+        <h1>My Account</h1>
+
+        <p>
+          <strong>Shop :</strong>
+          <span id="accountShop"></span>
+        </p>
+
+        <p>
+          <strong>Location :</strong>
+          <span id="accountLocation"></span>
+        </p>
+
+        <p>
+          <strong>Phone :</strong>
+          <span id="accountPhone"></span>
+        </p>
+
+        <button onclick="deleteAccount()">
+          Delete My Account
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+<!-- PRODUCT POPUP -->
+<div class="popup" id="popup">
+
+  <div class="popup-card">
+
+    <h2>Add Product</h2>
+
+    <input type="text" id="productName" placeholder="Product Name" />
+
+    <input type="text" id="productBarcode" placeholder="Barcode" />
+
+    <input type="number" id="productPrice" placeholder="Price" />
+
+    <input type="number" id="productQty" placeholder="Stock Quantity" />
+
+    <button onclick="saveProduct()">
+      Save Product
+    </button>
+
+    <button onclick="closePopup()">
+      Close
+    </button>
+
+  </div>
+
+</div>
+
+<script src="script.js"></script>
+
+</body>
 </html>
