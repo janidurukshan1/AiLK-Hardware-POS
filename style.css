@@ -1,534 +1,327 @@
-```css id="5q8v3m"
-/* ===================================== */
-/* AiLK Hardware Shop POS System */
-/* FULL MODERN CSS */
-/* ===================================== */
-
 *{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-    font-family:Arial, Helvetica, sans-serif;
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:Arial;
 }
 
 body{
-    background:#0f172a;
-    color:white;
-    overflow:hidden;
+  background:#0f172a;
+  color:white;
+  overflow:hidden;
 }
-
-/* ===================================== */
-/* LOGIN SCREEN */
-/* ===================================== */
 
 .login-screen{
-    position:fixed;
-    width:100%;
-    height:100vh;
-    background:linear-gradient(
-        135deg,
-        #0f172a,
-        #1e293b
-    );
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    z-index:9999;
+  position:fixed;
+  width:100%;
+  height:100vh;
+  background:linear-gradient(135deg,#020617,#0f172a);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  z-index:9999;
 }
 
-.login-box{
-    width:400px;
-    background:#1e293b;
-    padding:40px;
-    border-radius:20px;
-    box-shadow:0 0 30px rgba(0,0,0,0.4);
-    text-align:center;
-    animation:fadeIn 0.5s ease;
+.login-card{
+  width:420px;
+  background:#111827;
+  padding:40px;
+  border-radius:25px;
+  box-shadow:0 0 30px rgba(0,0,0,0.5);
+  text-align:center;
 }
 
-.login-box h1{
-    margin-bottom:10px;
-    color:#38bdf8;
+.spinner{
+  width:70px;
+  height:70px;
+  border:5px solid #1e293b;
+  border-top:5px solid #38bdf8;
+  border-radius:50%;
+  margin:auto;
+  margin-bottom:20px;
+  animation:spin 1s linear infinite;
+}
+@keyframes spin{
+  100%{
+    transform:rotate(360deg);
+  }
 }
 
-.login-text{
-    color:#94a3b8;
-    margin-bottom:25px;
+.login-card h1{
+  color:#38bdf8;
+  margin-bottom:10px;
 }
 
-.login-box input{
-    width:100%;
-    padding:15px;
-    margin-bottom:15px;
-    border:none;
-    border-radius:10px;
-    background:#334155;
-    color:white;
-    font-size:15px;
+.sub-title{
+  color:#94a3b8;
+  margin-bottom:25px;
+}
+.login-card input{
+  width:100%;
+  padding:15px;
+  margin-bottom:15px;
+  border:none;
+  border-radius:12px;
+  background:#1e293b;
+  color:white;
 }
 
-.login-box input:focus{
-    outline:none;
-    border:2px solid #38bdf8;
-}
-
-.login-box button{
-    width:100%;
-    padding:15px;
-    border:none;
-    border-radius:10px;
-    background:#38bdf8;
-    color:white;
-    font-size:16px;
-    font-weight:bold;
-    cursor:pointer;
-    transition:0.3s;
-}
-
-.login-box button:hover{
-    background:#0ea5e9;
+.login-card button{
+  width:100%;
+  padding:15px;
+  border:none;
+  border-radius:12px;
+  background:#38bdf8;
+  color:white;
+  font-size:16px;
+  cursor:pointer;
 }
 
 .powered{
-    margin-top:20px;
-    color:#94a3b8;
-    font-size:14px;
+  margin-top:20px;
+  color:#94a3b8;
 }
-
-/* ===================================== */
-/* SPINNER */
-/* ===================================== */
-
-.spinner{
-    width:70px;
-    height:70px;
-    border:6px solid #334155;
-    border-top:6px solid #38bdf8;
-    border-radius:50%;
-    margin:0 auto 20px;
-    animation:spin 1s linear infinite;
-}
-
-@keyframes spin{
-    100%{
-        transform:rotate(360deg);
-    }
-}
-
-@keyframes fadeIn{
-    from{
-        opacity:0;
-        transform:translateY(20px);
-    }
-
-    to{
-        opacity:1;
-        transform:translateY(0);
-    }
-}
-
-/* ===================================== */
-/* APP CONTAINER */
-/* ===================================== */
-
 .app-container{
-    display:flex;
-    width:100%;
-    height:100vh;
+  display:flex;
+  width:100%;
+  height:100vh;
 }
-
-/* ===================================== */
-/* SIDEBAR */
-/* ===================================== */
 
 .sidebar{
-    width:250px;
-    background:#111827;
-    padding:20px;
-    display:flex;
-    flex-direction:column;
-    gap:15px;
+  width:240px;
+  background:#111827;
+  padding:20px;
+  display:flex;
+  flex-direction:column;
+  gap:15px;
 }
 
-.logo{
-    text-align:center;
-    margin-bottom:30px;
+.logo-box{
+  text-align:center;
+  margin-bottom:20px;
 }
 
-.logo h2{
-    color:#38bdf8;
+.logo-box h2{
+  color:#38bdf8;
 }
 
 .sidebar button{
-    background:#1e293b;
-    border:none;
-    color:white;
-    padding:15px;
-    border-radius:12px;
-    text-align:left;
-    cursor:pointer;
-    transition:0.3s;
-    font-size:15px;
-}
-
-.sidebar button i{
-    margin-right:10px;
+  padding:15px;
+  border:none;
+  border-radius:15px;
+  background:#1e293b;
+  color:white;
+  cursor:pointer;
+  text-align:left;
 }
 
 .sidebar button:hover{
-    background:#38bdf8;
+  background:#38bdf8;
 }
 
-/* ===================================== */
-/* MAIN CONTENT */
-/* ===================================== */
+.sidebar button i{
+  margin-right:10px;
+}
 
 .main-content{
-    flex:1;
-    display:flex;
-    flex-direction:column;
+  flex:1;
+  display:flex;
+  flex-direction:column;
 }
-
-/* ===================================== */
-/* TOP BAR */
-/* ===================================== */
 
 .top-bar{
-    background:#111827;
-    padding:20px;
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-}
-
-.top-bar h2{
-    color:#38bdf8;
+  background:#111827;
+  padding:20px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
 }
 
 .top-right{
-    display:flex;
-    gap:20px;
-    align-items:center;
+  display:flex;
+  align-items:center;
+  gap:15px;
 }
-
-.cashier-box{
-    background:#1e293b;
-    padding:10px 15px;
-    border-radius:10px;
+#cashierDropdown{
+  padding:12px;
+  border:none;
+  border-radius:10px;
+  background:#1e293b;
+  color:white;
 }
 
 #dateBox{
-    background:#1e293b;
-    padding:10px 15px;
-    border-radius:10px;
+  background:#1e293b;
+  padding:12px;
+  border-radius:10px;
 }
-
-/* ===================================== */
-/* PAGES */
-/* ===================================== */
-
 .page{
-    display:none;
-    padding:20px;
-    overflow-y:auto;
-    height:100%;
+  display:none;
+  padding:20px;
+  overflow-y:auto;
+  height:100%;
 }
 
 .active-page{
-    display:block;
+  display:block;
 }
 
-/* ===================================== */
-/* HOME */
-/* ===================================== */
-
-.welcome-box{
-    background:#1e293b;
-    padding:40px;
-    border-radius:20px;
+.welcome-card,
+.account-card,
+.cashier-box-page{
+  background:#111827;
+  padding:30px;
+  border-radius:20px;
+}
+.billing-layout{
+  display:flex;
+  gap:20px;
+  height:100%;
 }
 
-.welcome-box h1{
-    margin-bottom:10px;
-    color:#38bdf8;
-}
-
-/* ===================================== */
-/* BILLING */
-/* ===================================== */
-
-.billing-container{
-    display:flex;
-    gap:20px;
-    height:100%;
-}
-
-.products-side{
-    flex:2;
-    background:#1e293b;
-    padding:20px;
-    border-radius:20px;
-    overflow-y:auto;
-}
-
-.bill-side{
-    width:350px;
-    background:#1e293b;
-    padding:20px;
-    border-radius:20px;
-    display:flex;
-    flex-direction:column;
+.products-section{
+  flex:2;
+  background:#111827;
+  border-radius:20px;
+  padding:20px;
+  overflow-y:auto;
 }
 
 .products-top{
-    display:flex;
-    gap:10px;
-    margin-bottom:20px;
+  display:flex;
+  gap:10px;
+  margin-bottom:20px;
 }
 
 .products-top input{
-    flex:1;
-    padding:12px;
-    border:none;
-    border-radius:10px;
-    background:#334155;
-    color:white;
+  flex:1;
+  padding:15px;
+  border:none;
+  border-radius:12px;
+  background:#1e293b;
+  color:white;
 }
 
 .products-top button{
-    width:50px;
-    border:none;
-    border-radius:10px;
-    background:#38bdf8;
-    color:white;
-    font-size:25px;
-    cursor:pointer;
+  width:55px;
+  border:none;
+  border-radius:12px;
+  background:#38bdf8;
+  color:white;
+  font-size:25px;
 }
-
 .product-item{
-    background:#334155;
-    padding:15px;
-    border-radius:15px;
-    margin-bottom:15px;
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
+  background:#1e293b;
+  padding:18px;
+  border-radius:18px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:15px;
 }
 
 .product-item button{
-    width:45px;
-    height:45px;
-    border:none;
-    border-radius:12px;
-    background:#38bdf8;
-    color:white;
-    font-size:20px;
-    cursor:pointer;
+  width:50px;
+  height:50px;
+  border:none;
+  border-radius:14px;
+  background:#38bdf8;
+  color:white;
+  font-size:20px;
+}
+.bill-section{
+  width:360px;
+  background:#111827;
+  border-radius:20px;
+  padding:20px;
+  display:flex;
+  flex-direction:column;
 }
 
 .bill-item{
-    background:#334155;
-    padding:12px;
-    border-radius:12px;
-    margin-bottom:10px;
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
+  background:#1e293b;
+  padding:15px;
+  border-radius:15px;
+  margin-bottom:10px;
+  display:flex;
+  justify-content:space-between;
 }
 
 .bill-item button{
-    border:none;
-    background:red;
-    color:white;
-    width:35px;
-    height:35px;
-    border-radius:10px;
-    cursor:pointer;
+  width:35px;
+  height:35px;
+  border:none;
+  border-radius:10px;
+  background:red;
+  color:white;
 }
 
-.bill-total{
-    margin-top:auto;
-    margin-bottom:20px;
-    text-align:center;
-    background:#334155;
-    padding:20px;
-    border-radius:15px;
+.bill-total-box{
+  margin-top:auto;
+  background:#1e293b;
+  padding:20px;
+  border-radius:15px;
+  text-align:center;
 }
 
 .bill-buttons{
-    display:flex;
-    flex-direction:column;
-    gap:10px;
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+  margin-top:15px;
+}
+.bill-buttons button,
+.cashier-add button,
+.account-card button,
+.popup-card button{
+  padding:15px;
+  border:none;
+  border-radius:12px;
+  background:#38bdf8;
+  color:white;
+  cursor:pointer;
 }
 
-.bill-buttons button{
-    padding:15px;
-    border:none;
-    border-radius:12px;
-    background:#38bdf8;
-    color:white;
-    font-size:15px;
-    cursor:pointer;
+.cashier-add{
+  display:flex;
+  gap:10px;
+  margin:20px 0;
 }
-
-/* ===================================== */
-/* CASHIER */
-/* ===================================== */
-
-.cashier-container{
-    background:#1e293b;
-    padding:25px;
-    border-radius:20px;
-}
-
-.cashier-add-box{
-    display:flex;
-    gap:10px;
-    margin:20px 0;
-}
-
-.cashier-add-box input{
-    flex:1;
-    padding:12px;
-    border:none;
-    border-radius:10px;
-    background:#334155;
-    color:white;
-}
-
-.cashier-add-box button{
-    padding:12px 20px;
-    border:none;
-    border-radius:10px;
-    background:#38bdf8;
-    color:white;
-    cursor:pointer;
+.cashier-add input,
+.popup-card input{
+  flex:1;
+  padding:15px;
+  border:none;
+  border-radius:12px;
+  background:#1e293b;
+  color:white;
 }
 
 .manage-product-item{
-    background:#334155;
-    padding:15px;
-    border-radius:15px;
-    margin-bottom:15px;
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
+  background:#1e293b;
+  padding:18px;
+  border-radius:18px;
+  margin-bottom:15px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
 }
-
 .manage-product-item button{
-    padding:10px 15px;
-    border:none;
-    border-radius:10px;
-    background:#38bdf8;
-    color:white;
-    cursor:pointer;
-    margin-left:10px;
+  padding:10px 15px;
+  border:none;
+  border-radius:10px;
+  background:#38bdf8;
+  color:white;
+  margin-left:10px;
 }
-
-/* ===================================== */
-/* SUMMARY */
-/* ===================================== */
 
 .summary-grid{
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
-    gap:20px;
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+  gap:20px;
 }
 
 .summary-card{
-    background:#1e293b;
-    padding:30px;
-    border-radius:20px;
-    text-align:center;
-}
-
-.summary-card h2{
-    margin-bottom:15px;
-    color:#38bdf8;
-}
-
-/* ===================================== */
-/* ACCOUNT */
-/* ===================================== */
-
-.account-box{
-    background:#1e293b;
-    padding:30px;
-    border-radius:20px;
-}
-
-.account-box p{
-    margin:15px 0;
-}
-
-.account-box button{
-    margin-top:20px;
-    padding:15px;
-    border:none;
-    border-radius:12px;
-    background:red;
-    color:white;
-    cursor:pointer;
-}
-
-/* ===================================== */
-/* POPUP */
-/* ===================================== */
-
-.popup{
-    position:fixed;
-    width:100%;
-    height:100vh;
-    background:rgba(0,0,0,0.7);
-    display:none;
-    justify-content:center;
-    align-items:center;
-    z-index:99999;
-}
-
-.popup-box{
-    width:400px;
-    background:#1e293b;
-    padding:30px;
-    border-radius:20px;
-}
-
-.popup-box h2{
-    margin-bottom:20px;
-    color:#38bdf8;
-}
-
-.popup-box input{
-    width:100%;
-    padding:15px;
-    margin-bottom:15px;
-    border:none;
-    border-radius:10px;
-    background:#334155;
-    color:white;
-}
-
-.popup-box button{
-    width:100%;
-    padding:15px;
-    margin-top:10px;
-    border:none;
-    border-radius:12px;
-    background:#38bdf8;
-    color:white;
-    cursor:pointer;
-}
-
-/* ===================================== */
-/* SCROLLBAR */
-/* ===================================== */
-
-::-webkit-scrollbar{
-    width:8px;
-}
-
-::-webkit-scrollbar-thumb{
-    background:#38bdf8;
-    border-radius:10px;
-}
-```
+  background:#111827;
+  padding:30px;
+  border-radius:20px;
