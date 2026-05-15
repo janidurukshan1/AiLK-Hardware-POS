@@ -1,403 +1,57 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AiLK POS System</title>
 
-<title>AiLK POS System</title>
+  <link rel="stylesheet" href="style.css" />
 
-<link rel="stylesheet" href="style.css">
-
-<link
-rel="stylesheet"
-href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
-/>
-
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+  />
 </head>
-
 <body>
 
-<!-- ========================= -->
-<!-- LOGIN SCREEN -->
-<!-- ========================= -->
-
+<!-- LOGIN -->
 <div class="login-screen" id="loginScreen">
 
-    <div class="login-box">
+  <div class="login-card">
 
-        <div class="spinner"></div>
+    <div class="spinner"></div>
 
-        <h1>AiLK POS</h1>
+    <h1>AiLK POS System</h1>
 
-        <p class="login-text">
-            Modern Billing System
-        </p>
+    <p class="sub-title">
+      Shop Billing & Management
+    </p>
 
-        <input
-        type="text"
-        id="shopName"
-        placeholder="Shop Name"
-        >
+    <input type="text" id="shopName" placeholder="Shop Name" />
 
-        <input
-        type="text"
-        id="shopLocation"
-        placeholder="Shop Location"
-        >
+    <input type="text" id="shopLocation" placeholder="Shop Location" />
 
-        <input
-        type="text"
-        id="shopPhone"
-        placeholder="Phone Number"
-        >
+    <input type="text" id="shopPhone" placeholder="Phone Number" />
 
-        <input
-        type="text"
-        id="cashierName"
-        placeholder="Cashier Name"
-        >
+    <input type="text" id="cashierName" placeholder="Cashier Name" />
 
-        <button id="loginBtn">
-            Login To POS
-        </button>
+    <button id="loginBtn">
+      Login To POS
+    </button>
 
-        <p class="powered">
-            Powered By AiLK
-        </p>
+    <p class="powered">
+      Powered By AiLK
+    </p>
 
-    </div>
+  </div>
 
 </div>
 
-<!-- ========================= -->
 <!-- MAIN APP -->
-<!-- ========================= -->
-
 <div class="app-container">
 
-    <!-- SIDEBAR -->
+  <!-- SIDEBAR -->
+  <div class="sidebar">
 
-    <div class="sidebar">
-
-        <div class="logo">
-            <h2>AiLK POS</h2>
-        </div>
-
-        <button onclick="showPage('homePage')">
-            <i class="fa-solid fa-house"></i>
-            Home
-        </button>
-
-        <button onclick="showPage('billingPage')">
-            <i class="fa-solid fa-cash-register"></i>
-            Billing
-        </button>
-
-        <button onclick="showPage('cashierPage')">
-            <i class="fa-solid fa-users"></i>
-            Cashiers
-        </button>
-
-        <button onclick="showPage('summaryPage')">
-            <i class="fa-solid fa-chart-line"></i>
-            Summary
-        </button>
-
-        <button onclick="showPage('productsPage')">
-            <i class="fa-solid fa-box"></i>
-            Products
-        </button>
-
-        <button onclick="showPage('accountPage')">
-            <i class="fa-solid fa-user"></i>
-            My Account
-        </button>
-
-    </div>
-
-    <!-- MAIN CONTENT -->
-
-    <div class="main-content">
-
-        <!-- TOP BAR -->
-
-        <div class="top-bar">
-
-            <h2 id="shopTitle">
-                AiLK Pos System
-            </h2>
-
-            <div class="top-right">
-
-                <div class="cashier-box">
-
-                    <i class="fa-solid fa-user"></i>
-
-                    <span id="cashierDisplay">
-                        Cashier
-                    </span>
-
-                </div>
-
-                <div id="dateBox"></div>
-
-            </div>
-
-        </div>
-
-        <!-- ===================== -->
-        <!-- HOME PAGE -->
-        <!-- ===================== -->
-
-        <div class="page active-page" id="homePage">
-
-            <div class="welcome-box">
-
-                <h1>
-                    Welcome To AiLK Hardware POS
-                </h1>
-
-                <p>
-                    Manage Billing, Products,
-                    Cashiers and Reports Easily.
-                </p>
-
-            </div>
-
-        </div>
-
-        <!-- ===================== -->
-        <!-- BILLING PAGE -->
-        <!-- ===================== -->
-
-        <div class="page" id="billingPage">
-
-            <div class="billing-container">
-
-                <!-- LEFT -->
-
-                <div class="products-side">
-
-                    <div class="products-top">
-
-                        <input
-                        type="text"
-                        id="searchInput"
-                        placeholder="Search Product Or Barcode"
-                        onkeyup="searchProducts()"
-                        >
-
-                        <button onclick="openProductPopup()">
-                            +
-                        </button>
-
-                    </div>
-
-                    <div id="productList"></div>
-
-                </div>
-
-                <!-- RIGHT -->
-
-                <div class="bill-side">
-
-                    <h2>Current Bill</h2>
-
-                    <div id="billItems"></div>
-
-                    <div class="bill-total">
-
-                        <h2 id="billTotal">
-                            LKR 0
-                        </h2>
-
-                    </div>
-
-                    <div class="bill-buttons">
-
-                        <button onclick="checkoutBill()">
-                            Checkout
-                        </button>
-
-                        <button onclick="clearBill()">
-                            Clear
-                        </button>
-
-                        <button onclick="printReceipt()">
-                            Print
-                        </button>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-        </div>
-
-        <!-- ===================== -->
-        <!-- CASHIER PAGE -->
-        <!-- ===================== -->
-
-        <div class="page" id="cashierPage">
-
-            <div class="cashier-container">
-
-                <h1>Cashier Management</h1>
-
-                <div class="cashier-add-box">
-
-                    <input
-                    type="text"
-                    id="newCashier"
-                    placeholder="Enter Cashier Name"
-                    >
-
-                    <button onclick="addCashier()">
-                        Add Cashier
-                    </button>
-
-                </div>
-
-                <div id="cashierList"></div>
-
-            </div>
-
-        </div>
-
-        <!-- ===================== -->
-        <!-- SUMMARY PAGE -->
-        <!-- ===================== -->
-
-        <div class="page" id="summaryPage">
-
-            <div class="summary-grid">
-
-                <div class="summary-card">
-
-                    <h2>Today's Sales</h2>
-
-                    <p id="todaySales">
-                        LKR 0
-                    </p>
-
-                </div>
-
-                <div class="summary-card">
-
-                    <h2>Total Bills</h2>
-
-                    <p id="totalBills">
-                        0
-                    </p>
-
-                </div>
-
-            </div>
-
-        </div>
-
-        <!-- ===================== -->
-        <!-- PRODUCTS PAGE -->
-        <!-- ===================== -->
-
-        <div class="page" id="productsPage">
-
-            <h1>Manage Products</h1>
-
-            <div id="manageProducts"></div>
-
-        </div>
-
-        <!-- ===================== -->
-        <!-- ACCOUNT PAGE -->
-        <!-- ===================== -->
-
-        <div class="page" id="accountPage">
-
-            <div class="account-box">
-
-                <h1>My Account</h1>
-
-                <p>
-                    <strong>Shop :</strong>
-                    <span id="accountShopName"></span>
-                </p>
-
-                <p>
-                    <strong>Location :</strong>
-                    <span id="accountLocation"></span>
-                </p>
-
-                <p>
-                    <strong>Phone :</strong>
-                    <span id="accountPhone"></span>
-                </p>
-
-                <p>
-                    <strong>Cashier :</strong>
-                    <span id="accountCashier"></span>
-                </p>
-
-                <button onclick="resetAccount()">
-                    Delete Account Data
-                </button>
-
-            </div>
-
-        </div>
-
-    </div>
-
-</div>
-
-<!-- ========================= -->
-<!-- PRODUCT POPUP -->
-<!-- ========================= -->
-
-<div class="popup" id="productPopup">
-
-    <div class="popup-box">
-
-        <h2>Add Product</h2>
-
-        <input
-        type="text"
-        id="productName"
-        placeholder="Product Name"
-        >
-
-        <input
-        type="text"
-        id="productBarcode"
-        placeholder="Barcode"
-        >
-
-        <input
-        type="number"
-        id="productPrice"
-        placeholder="Price"
-        >
-
-        <input
-        type="number"
-        id="productQty"
-        placeholder="Stock Quantity"
-        >
-
-        <button onclick="saveProduct()">
-            Save Product
-        </button>
-
-        <button onclick="closePopup()">
-            Close
-        </button>
-
-    </div>
-
-</div>
-
-<script src="script.js"></script>
-
-</body>
+    <div class="logo-box">
 </html>
